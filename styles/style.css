@@ -1,0 +1,43 @@
+body {
+    display: grid;
+    grid-template-rows: 10% 1fr 20px;
+    grid-template-columns: 2fr 1fr;
+    height: calc(100vh - 8px);
+    margin-bottom: 0px;
+}
+
+.title {
+    grid-column: 1/3;
+    justify-self: center;
+    align-self: center;
+}
+
+.footer {
+    grid-column: 1/3;
+    justify-self:center;
+    align-self:center
+}
+
+.game-container {
+    margin: 0px 25px 0px 0px;
+    border: 1px solid grey;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.cell {
+    border: 1px solid grey;
+}
+
+.cell:hover {
+    background-color: beige;
+}
+
+.game-info {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    display: grid;
+    grid-template-rows: 10% 1fr 1fr;
+    justify-content: center;
+}
