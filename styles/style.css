@@ -28,6 +28,10 @@ body {
 
 .cell {
     border: 1px solid grey;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    font-size: 3em;
 }
 
 .cell:hover {
