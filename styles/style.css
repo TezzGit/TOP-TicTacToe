@@ -38,6 +38,58 @@ body {
     grid-column: 2/3;
     grid-row: 2/3;
     display: grid;
-    grid-template-rows: 10% 1fr 1fr;
-    justify-content: center;
+    grid-template-rows: 10% 150px 1fr;
+    gap: 16px;
+}
+
+.new-game-btn {
+    width: 150px;
+    justify-self: center;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.6rem;
+}
+
+.players {
+    display: grid;
+    grid-template-rows: 60px 40px 40px;
+    align-items: center;
+    justify-items: center;
+}
+
+.player {
+    display: grid;
+    grid-template-columns: 90% 1fr;
+    align-items: center;
+}
+
+.rename-btn {
+    border: 0;
+    background-color: transparent;
+}
+
+.rename-btn embed {
+    width: 24px;
+}
+
+.heading {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.scoreboard {
+    display: grid;
+    grid-template-rows: 60px 40px 40px 40px;
+    align-items: center;
+    justify-items: center;
+}
+
+.score {
+    display: grid;
+    grid-template-columns: 90% 1fr;
+    width: 150px;
+}
+
+.score .empty {
+    justify-self: center;
 }
