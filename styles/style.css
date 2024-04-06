@@ -31,7 +31,6 @@ body {
     display: grid;
     justify-items: center;
     align-items: center;
-    font-size: 3em;
 }
 
 .cell:hover {
@@ -72,7 +71,7 @@ body {
     background-color: transparent;
 }
 
-.rename-btn:hover {
+.rename-btn:hover .rename-btn:enabled {
     background-color: lightcyan;
 }
 
@@ -100,4 +99,18 @@ body {
 
 .score .empty {
     justify-self: center;
+}
+
+.circle {
+    background-image: url("../icons/circle.svg");
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.cross {
+    background-image: url("../icons/cross.svg");
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
 }

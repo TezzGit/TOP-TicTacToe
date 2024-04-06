@@ -83,8 +83,21 @@ const Gameboard = (function () {
     }
 
     const drawBoard = () => {
-        [...document.querySelectorAll('.cell')].forEach((gameCell, iterator) => {
-            gameCell.innerHTML = Cells[iterator]
+        const boardCells = [...document.querySelectorAll('.cell')];
+
+        Cells.forEach((cell, iterator) => {
+            switch (cell) {
+                case "x":
+                    boardCells[iterator].classList.add('cross');
+                    break;
+                case "o":
+                    boardCells[iterator].classList.add('circle');
+                    break;
+                case "":
+                    boardCells[iterator].classList.remove('cross');
+                    boardCells[iterator].classList.remove('circle');
+                    break;
+            }
         })
     }
 
@@ -129,7 +142,10 @@ const Gameboard = (function () {
         drawBoard();
     }
 
-    return { GetCurrentPlayer, PlayRound, ResetGame, GetRound }
+    const RenamePlayerOne = (newName) => player1.setPlayerName(newName);
+    const RenamePlayerTwo = (newName) => player2.setPlayerName(newName);
+
+    return { GetCurrentPlayer, PlayRound, ResetGame, GetRound, RenamePlayerOne, RenamePlayerTwo }
 })()
 
 const gridCells = [...document.querySelectorAll('.cell')]
@@ -141,3 +157,6 @@ gridCells.forEach((gameCell, iterator) => {
 })
 
 document.getElementsByClassName('new-game-btn')[0].addEventListener("click", () => Gameboard.ResetGame());
+
+//document.getElementsByClassName('rename-btn')[0].addEventListener("click", () => Gameboard.RenamePlayerOne());
+//document.getElementsByClassName('rename-btn')[1].addEventListener("click", () => Gameboard.RenamePlayerTwo());
