@@ -1,6 +1,12 @@
 # TOP - TicTacToe
 Simple Tic Tac Toe Game built for Web for The Odin Project Javascript Course.
 
+TODO:
+Save Player Wins
+Game Over and Player Win Splash Screens
+Change Name Form
+Add Final Stylings
+
 Features:
 Set/Rename Player Names
 Session Scoreboard
