@@ -23,26 +23,34 @@ function createScore(name) {
     return { SetPlayerName, GetPlayerName, GetGamesWon, IncrementScore };
 }
 
-const Soreboard = (function () {
+const Scoreboard = (function () {
     const scores = [];
     const AddScore = (name) => {
-        const findPlayerIndex = scores.findIndex(name);
-        if (findPlayerIndex === -1) {
+        if (scores.length === 0) {
+            scores.push(createScore(name));
+            return;
+        }
+        const scoreFound = scores.find((element) => element.GetPlayerName() === name); // <---- FIX PROBLEM
+
+        if (scoreFound === undefined) {
             scores.push(createScore(name));
         } else {
-            scores[findPlayerIndex].IncrementScore();
+            scoreFound.IncrementScore();
         }
     }
-    const GetScore = (name) => scores.find(name).gamesWon;
+
+    const GetScore = (name) => scores.find((element) => element.GetPlayerName() === name).gamesWon;
 
     // Sort Descending -> Return Top 3 Scores
-    const GetScores = () => scores.sort((a, b) => a.GetScore() > b.GetScore() ? -1 : 1)
-        .slice(0, 3);
+    const GetScores = () => {
+        if (scores.length < 2) return scores;
+        return scores.sort((a, b) => a.GetGamesWon() > b.GetGamesWon() ? -1 : 1).slice(0, 5);
+    };
 
     return { AddScore, GetScore, GetScores };
 })()
 
-// Refactor Document Manipulation into Seperate Module to Uncouple Gameboard Functionality
+
 const Screen = (function () {
     const gameOverScreen = document.querySelector('.game-over-screen');
     const gameOverHeading = document.querySelector('.result-heading');
@@ -105,9 +113,11 @@ const Screen = (function () {
     const AcceptNameForm = () => {
         if (renamePlayerFrm.classList.contains('player1')) {
             SetPlayerName(0, renamePlayerInput.value)
+            Gameboard.RenamePlayer(0, renamePlayerInput.value);
         }
         if (renamePlayerFrm.classList.contains('player2')) {
             SetPlayerName(1, renamePlayerInput.value);
+            Gameboard.RenamePlayer(1, renamePlayerInput.value)
         }
         ClearNameForm();
         ShowRenameScreen();
@@ -130,7 +140,21 @@ const Screen = (function () {
         }
     }
 
-    return { ShowGameOverScreen, SetGameOverHeading, SetGameOverText, SetGameBoardCell, ClearGameBoardCell, SetPlayerName, GetNameAcceptBtn, GetNameCancelBtn, SetNameFormOwner, AcceptNameForm, CancelNameForm, ClearNameForm, GetRenameBtn, ShowRenameScreen }
+    const DrawScoreboard = () => {
+        const scoresDivs = [...document.querySelectorAll(".score")];
+        const scores = Scoreboard.GetScores();
+        scores.forEach((element, iterator) => {
+            // Name Div
+            scoresDivs[iterator].children[0].innerHTML = element.GetPlayerName();
+            if (scoresDivs[iterator].children[0].classList.contains("empty")) {
+                scoresDivs[iterator].children[0].classList.remove('empty');
+            }
+            // Games Won Div
+            scoresDivs[iterator].children[1].innerHTML = element.GetGamesWon();
+        })
+    }
+
+    return { ShowGameOverScreen, SetGameOverHeading, SetGameOverText, SetGameBoardCell, ClearGameBoardCell, SetPlayerName, GetNameAcceptBtn, GetNameCancelBtn, SetNameFormOwner, AcceptNameForm, CancelNameForm, ClearNameForm, GetRenameBtn, ShowRenameScreen, DrawScoreboard }
 })()
 
 
@@ -205,15 +229,19 @@ const Gameboard = (function () {
             case "Player1":
                 Screen.SetGameOverHeading(`${player1.GetPlayerName().toUpperCase()} Wins`);
                 Screen.SetGameOverText(`Better Luck Next Time ${player2.GetPlayerName().toUpperCase()}, Do You Want To Play Again?`);
+                Scoreboard.AddScore(player1.GetPlayerName());
                 break;
             case "Player2":
                 Screen.SetGameOverHeading(`${player2.GetPlayerName().toUpperCase()} Wins`);
                 Screen.SetGameOverText(`Better Luck Next Time ${player1.GetPlayerName().toUpperCase()}, Do You Want to Play Again?`);
+                Scoreboard.AddScore(player2.GetPlayerName());
                 break;
             case "draw":
                 Screen.SetGameOverHeading("Draw - No Winner");
                 Screen.SetGameOverText("Better Luck Next Time, Do You Want To Play Again?");
         }
+
+        Screen.DrawScoreboard();
     }
 
     const PlayRound = (cellPicked) => {

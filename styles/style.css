@@ -102,7 +102,7 @@ body {
 
 .scoreboard {
     display: grid;
-    grid-template-rows: 60px 40px 40px 40px;
+    grid-template-rows: 60px 40px 40px 40px 40px 40px;
     align-items: center;
     justify-items: center;
 }
