@@ -1,9 +1,20 @@
+@font-face {
+    font-family: "DIMIS";
+    src: url(../fonts/DIMIS___.TTF) format('truetype');
+}
+
 body {
     display: grid;
     grid-template-rows: 10% 1fr 20px;
     grid-template-columns: 2fr 1fr;
     height: calc(100vh - 8px);
     margin: 0px;
+
+    font-family: "DIMIS", Arial, Helvetica, sans-serif;
+}
+
+button {
+    font-family: "DIMIS", Arial, Helvetica, sans-serif;
 }
 
 .title {
