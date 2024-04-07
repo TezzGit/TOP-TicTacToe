@@ -148,15 +148,24 @@ const Gameboard = (function () {
     return { GetCurrentPlayer, PlayRound, ResetGame, GetRound, RenamePlayerOne, RenamePlayerTwo }
 })()
 
-const gridCells = [...document.querySelectorAll('.cell')]
 
-gridCells.forEach((gameCell, iterator) => {
-    gameCell.addEventListener("click", () => {
-        Gameboard.PlayRound(iterator);
+
+addEventListener('load', () => {
+    const gridCells = [...document.querySelectorAll('.cell')]
+
+    gridCells.forEach((gameCell, iterator) => {
+        gameCell.addEventListener("click", () => {
+            Gameboard.PlayRound(iterator);
+        })
+    })
+
+    const newGameBtns = [...document.getElementsByClassName('new-game-btn')];
+
+    newGameBtns.forEach((element) => {
+        element.addEventListener("click", () => Gameboard.ResetGame());
     })
 })
 
-document.getElementsByClassName('new-game-btn')[0].addEventListener("click", () => Gameboard.ResetGame());
 
 //document.getElementsByClassName('rename-btn')[0].addEventListener("click", () => Gameboard.RenamePlayerOne());
 //document.getElementsByClassName('rename-btn')[1].addEventListener("click", () => Gameboard.RenamePlayerTwo());

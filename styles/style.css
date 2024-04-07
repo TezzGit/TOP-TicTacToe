@@ -3,7 +3,7 @@ body {
     grid-template-rows: 10% 1fr 20px;
     grid-template-columns: 2fr 1fr;
     height: calc(100vh - 8px);
-    margin-bottom: 0px;
+    margin: 0px;
 }
 
 .title {
@@ -51,6 +51,16 @@ body {
     border-radius: 25px;
     font-weight: bold;
     font-size: 1.6rem;
+    border: none;
+    box-shadow: 5px 5px 3px lightgrey;
+}
+
+.new-game-btn:hover:enabled{
+    transform: translateY(-1px);
+}
+
+.new-game-btn:active:enabled{
+    transform: translateY(1px);
 }
 
 .players {
@@ -71,7 +81,7 @@ body {
     background-color: transparent;
 }
 
-.rename-btn:hover .rename-btn:enabled {
+.rename-btn:hover:enabled {
     background-color: lightcyan;
 }
 
@@ -113,4 +123,43 @@ body {
     background-size: 75% 75%;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.game-over-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+
+    backdrop-filter: blur(6px);
+}
+
+.game-over-banner {
+    height: 250px;
+    width: 100vw;
+    background-color: white;
+    box-shadow: 0px 5px 5px grey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-heading {
+    font-size: 2.5em;
+}
+
+.result-text {
+    margin-bottom: 5px;
+}
+
+.game-over-banner .new-game-btn {
+    border: none;
+}
+
+.hidden {
+    visibility: hidden;
+    display: none;
 }
