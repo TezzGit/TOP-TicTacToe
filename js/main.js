@@ -52,7 +52,7 @@ const Screen = (function () {
         if (!hide) {
             gameOverScreen.classList.add('hidden');
             return;
-        } 
+        }
         gameOverScreen.classList.remove('hidden');
     }
 
@@ -63,7 +63,74 @@ const Screen = (function () {
     const SetGameBoardCell = (cellID, symbol) => boardCells[cellID].classList.add(symbol);
     const ClearGameBoardCell = (cellID) => boardCells[cellID].classList = "cell";
 
-    return { ShowGameOverScreen, SetGameOverHeading, SetGameOverText, SetGameBoardCell, ClearGameBoardCell }
+    const players = [...document.querySelectorAll('.player-name')];
+    const SetPlayerName = (index, name) => {
+        if (index >= 0 && index < players.length) players[index].innerHTML = name.toUpperCase();
+    }
+
+    const renamePlayerScreen = document.querySelector('.name-change-screen');
+    const renamePlayerFrm = document.querySelector('.name-change-form');
+    const renamePlayerInput = document.querySelector('.name-field');
+    const renameAcceptBtn = document.querySelector('.accept');
+    const renameCancelBtn = document.querySelector('.cancel');
+
+    const GetNameAcceptBtn = () => renameAcceptBtn;
+    const GetNameCancelBtn = () => renameCancelBtn;
+
+    const ShowRenameScreen = (showScreen = false) => {
+        if (!showScreen) {
+            renamePlayerScreen.classList.add('hidden');
+            return;
+        }
+        renamePlayerScreen.classList.remove('hidden');
+    }
+
+    const SetNameFormOwner = (id) => {
+        switch (id) {
+            case 0:
+                renamePlayerFrm.classList = "name-change-form";
+                renamePlayerFrm.classList.add('player1')
+                break;
+            case 1:
+                // belongs to player 2
+                renamePlayerFrm.classList = "name-change-form";
+                renamePlayerFrm.classList.add('player2');
+                break;
+            default:
+                // out of scope
+                console.log('Screen::SetNameFormOwner -> id out of scope');
+        }
+    }
+
+    const AcceptNameForm = () => {
+        if (renamePlayerFrm.classList.contains('player1')) {
+            SetPlayerName(0, renamePlayerInput.value)
+        }
+        if (renamePlayerFrm.classList.contains('player2')) {
+            SetPlayerName(1, renamePlayerInput.value);
+        }
+        ClearNameForm();
+        ShowRenameScreen();
+    }
+
+    const CancelNameForm = () => {
+        ClearNameForm();
+        ShowRenameScreen();
+    }
+
+    const ClearNameForm = () => {
+        renamePlayerInput.innerHTML = "";
+    }
+
+    const renameBtns = document.querySelectorAll('.rename-btn');
+
+    const GetRenameBtn = (id) => {
+        if (id >= 0 && id < renameBtns.length) {
+            return renameBtns[id];
+        }
+    }
+
+    return { ShowGameOverScreen, SetGameOverHeading, SetGameOverText, SetGameBoardCell, ClearGameBoardCell, SetPlayerName, GetNameAcceptBtn, GetNameCancelBtn, SetNameFormOwner, AcceptNameForm, CancelNameForm, ClearNameForm, GetRenameBtn, ShowRenameScreen }
 })()
 
 
@@ -180,10 +247,31 @@ const Gameboard = (function () {
         Screen.ShowGameOverScreen(false);
     }
 
-    const RenamePlayerOne = (newName) => player1.SetPlayerName(newName);
-    const RenamePlayerTwo = (newName) => player2.SetPlayerName(newName);
+    const RenamePlayer = (index, newName) => {
+        switch (index) {
+            case 0:
+                player1.SetPlayerName(newName);
+                Screen.SetPlayerName(0, newName);
+                break;
+            case 1:
+                player2.SetPlayerName(newName);
+                Screen.SetPlayerName(1, newName);
+        }
 
-    return { PlayRound, ResetGame, RenamePlayerOne, RenamePlayerTwo }
+    }
+
+    const GetPlayerName = (index) => {
+        switch (index) {
+            case 0:
+                return player1.GetPlayerName();
+            case 1:
+                return player2.GetPlayerName();
+            default:
+                console.log("BoardGame::GetPlayerName -> Index Out of Bounds");
+        }
+    }
+
+    return { PlayRound, ResetGame, RenamePlayer, GetPlayerName }
 })()
 
 
@@ -201,8 +289,20 @@ addEventListener('load', () => {
     newGameBtns.forEach((element) => {
         element.addEventListener("click", () => Gameboard.ResetGame());
     })
+
+    Screen.SetPlayerName(0, Gameboard.GetPlayerName(0));
+    Screen.SetPlayerName(1, Gameboard.GetPlayerName(1));
+
+    Screen.GetNameAcceptBtn().addEventListener('click', () => Screen.AcceptNameForm());
+    Screen.GetNameCancelBtn().addEventListener('click', () => Screen.CancelNameForm());
+
+    Screen.GetRenameBtn(0).addEventListener('click', () => {
+        Screen.SetNameFormOwner(0);
+        Screen.ShowRenameScreen(true);
+    })
+
+    Screen.GetRenameBtn(1).addEventListener('click', () => {
+        Screen.SetNameFormOwner(1);
+        Screen.ShowRenameScreen(true);
+    })
 })
-
-
-//document.getElementsByClassName('rename-btn')[0].addEventListener("click", () => Gameboard.RenamePlayerOne());
-//document.getElementsByClassName('rename-btn')[1].addEventListener("click", () => Gameboard.RenamePlayerTwo());

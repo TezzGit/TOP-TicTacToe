@@ -78,6 +78,12 @@ body {
 
 .rename-btn {
     border: 0;
+    background-image: url(../icons/edit.svg);
+    width: 32px;
+    height: 32px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 60% 60%;
     background-color: transparent;
 }
 
@@ -163,4 +169,56 @@ body {
 .hidden {
     visibility: hidden;
     display: none;
+}
+
+.name-change-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+
+    backdrop-filter: blur(6px);
+}
+
+.name-change-form {
+    background-color: white;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    box-shadow: 1px 1px 5px grey;
+}
+
+.name-change-form .heading {
+    margin-bottom: 10px;
+}
+
+.accept {
+    background-image: url(../icons/tick.svg);
+    background-size: 75% 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: transparent;
+    width: 32px;
+    height: 32px;
+}
+
+.cancel {
+    background-image: url(../icons/cancel.svg);
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: transparent;
+    width: 32px;
+    height: 32px;
+}
+
+.btn-grp button:hover {
+    transform: translateY(2px);
 }
