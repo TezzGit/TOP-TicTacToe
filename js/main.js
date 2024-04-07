@@ -30,6 +30,7 @@ const scoreboard = (function () {
 })()
 
 const Gameboard = (function () {
+    const gameOverScreen = document.querySelector('.game-over-screen');
     let gameOver = false;
     let player1Won = false;
     let player2Won = false;
@@ -103,33 +104,49 @@ const Gameboard = (function () {
 
     const GetRound = () => currentTurn;
 
-    const PlayRound = (cellPicked) => {
-        if (currentTurn > maxTurns) {
-            gameOver = true;
-        }
+    const GameOver = (winner = "draw") => {
+        gameOver = true;
+        // Get Game Over Heading, text, and screen
+        const gameOverHeading = document.querySelector('.result-heading');
+        const gameOverText = document.querySelector('.result-text')
 
-        if (gameOver) {
-            alert("Game is Over, Restart Game");
-            return;
+        gameOverScreen.classList.remove('hidden')
+
+        switch (winner) {
+            case "Player1":
+                gameOverHeading.innerHTML = `${player1.playerName.toUpperCase()} Wins`;
+                gameOverText.innerHTML = `Better Luck Next Time ${player2.playerName.toUpperCase()}, Do You Want To Play Again?`
+                break;
+            case "Player2":
+                gameOverHeading.innerHTML = `${player2.playerName.toUpperCase()} Wins`
+                gameOverText.innerHTML = `Better Luck Next Time ${player1.playerName.toUpperCase()}, Do You Want to Play Again?`
+                break;
+            case "draw":
+                gameOverHeading.innerHTML = "Draw - No Winner";
+                gameOverText.innerHTML = "Better Luck Next Time, Do You Want To Play Again?"
         }
+    }
+
+    const PlayRound = (cellPicked) => {
 
         if (!emptyCell(cellPicked)) {
             return;
         }
 
         Cells[cellPicked] = currentPlayer.getSymbol();
+
         drawBoard();
 
         player1Won = checkWin('x');
-        if (player1Won) console.log("Player 1 Won");
+        if (player1Won) GameOver('Player1');
         player2Won = checkWin('o');
-        if (player2Won) console.log("Player 2 Won")
-
-        if (player1Won || player2Won) {
-            gameOver = true;
-        }
+        if (player2Won) GameOver('Player2');
 
         EndTurn();
+
+        if (currentTurn > maxTurns) {
+            GameOver();
+        }
     }
 
     const ResetGame = () => {
@@ -140,6 +157,7 @@ const Gameboard = (function () {
         player2Won = false;
         Cells.fill("");
         drawBoard();
+        gameOverScreen.classList.add('hidden');
     }
 
     const RenamePlayerOne = (newName) => player1.setPlayerName(newName);
