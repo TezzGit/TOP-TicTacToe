@@ -1,11 +1,16 @@
 function createPlayer(name) {
     let playerName = name;
-    const setPlayerName = (newName) => playerName = newName;
+    const SetPlayerName = (newName) => playerName = newName;
+    const GetPlayerName = () => playerName;
 
     let symbol = name;
-    const getSymbol = () => symbol;
+    const GetSymbol = () => symbol;
 
-    return { playerName, getSymbol, setPlayerName };
+    let won = false;
+    const SetWon = (haveWon) => won = haveWon;
+    const GetWon = () => won;
+
+    return { GetPlayerName, SetPlayerName, GetSymbol, SetWon, GetWon };
 }
 
 function createScore(name) {
@@ -15,7 +20,7 @@ function createScore(name) {
     return { playerName, gamesWon, incrementScore };
 }
 
-const scoreboard = (function () {
+const Soreboard = (function () {
     const scores = [];
     const AddScore = (name) => {
         const findPlayerIndex = scores.findIndex(name);
@@ -31,9 +36,6 @@ const scoreboard = (function () {
 
 const Gameboard = (function () {
     const gameOverScreen = document.querySelector('.game-over-screen');
-    let gameOver = false;
-    let player1Won = false;
-    let player2Won = false;
     const maxTurns = 9;
     let currentTurn = 1;
 
@@ -105,7 +107,6 @@ const Gameboard = (function () {
     const GetRound = () => currentTurn;
 
     const GameOver = (winner = "draw") => {
-        gameOver = true;
         // Get Game Over Heading, text, and screen
         const gameOverHeading = document.querySelector('.result-heading');
         const gameOverText = document.querySelector('.result-text')
@@ -114,12 +115,12 @@ const Gameboard = (function () {
 
         switch (winner) {
             case "Player1":
-                gameOverHeading.innerHTML = `${player1.playerName.toUpperCase()} Wins`;
-                gameOverText.innerHTML = `Better Luck Next Time ${player2.playerName.toUpperCase()}, Do You Want To Play Again?`
+                gameOverHeading.innerHTML = `${player1.GetPlayerName().toUpperCase()} Wins`;
+                gameOverText.innerHTML = `Better Luck Next Time ${player2.GetPlayerName().toUpperCase()}, Do You Want To Play Again?`
                 break;
             case "Player2":
-                gameOverHeading.innerHTML = `${player2.playerName.toUpperCase()} Wins`
-                gameOverText.innerHTML = `Better Luck Next Time ${player1.playerName.toUpperCase()}, Do You Want to Play Again?`
+                gameOverHeading.innerHTML = `${player2.GetPlayerName().toUpperCase()} Wins`
+                gameOverText.innerHTML = `Better Luck Next Time ${player1.GetPlayerName().toUpperCase()}, Do You Want to Play Again?`
                 break;
             case "draw":
                 gameOverHeading.innerHTML = "Draw - No Winner";
@@ -133,14 +134,14 @@ const Gameboard = (function () {
             return;
         }
 
-        Cells[cellPicked] = currentPlayer.getSymbol();
+        Cells[cellPicked] = currentPlayer.GetSymbol();
 
         drawBoard();
 
-        player1Won = checkWin('x');
-        if (player1Won) GameOver('Player1');
-        player2Won = checkWin('o');
-        if (player2Won) GameOver('Player2');
+        player1.SetWon(checkWin('x'));
+        if (player1.GetWon()) GameOver('Player1');
+        player2.SetWon(checkWin('o'));
+        if (player2.GetWon()) GameOver('Player2');
 
         EndTurn();
 
@@ -150,18 +151,17 @@ const Gameboard = (function () {
     }
 
     const ResetGame = () => {
-        gameOver = false;
         currentTurn = 1;
         currentPlayer = player1;
-        player1Won = false;
-        player2Won = false;
+        player1.SetWon(false);
+        player2.SetWon(false);
         Cells.fill("");
         drawBoard();
         gameOverScreen.classList.add('hidden');
     }
 
-    const RenamePlayerOne = (newName) => player1.setPlayerName(newName);
-    const RenamePlayerTwo = (newName) => player2.setPlayerName(newName);
+    const RenamePlayerOne = (newName) => player1.SetPlayerName(newName);
+    const RenamePlayerTwo = (newName) => player2.SetPlayerName(newName);
 
     return { GetCurrentPlayer, PlayRound, ResetGame, GetRound, RenamePlayerOne, RenamePlayerTwo }
 })()
