@@ -49,11 +49,11 @@ const Screen = (function () {
     const gameOverText = document.querySelector('.result-text')
 
     const ShowGameOverScreen = (hide) => {
-        if (hide) {
+        if (!hide) {
             gameOverScreen.classList.add('hidden');
-        } else {
-            gameOverScreen.classList.remove('hidden');
-        }
+            return;
+        } 
+        gameOverScreen.classList.remove('hidden');
     }
 
     const SetGameOverHeading = (newHeading) => gameOverHeading.innerHTML = newHeading;
