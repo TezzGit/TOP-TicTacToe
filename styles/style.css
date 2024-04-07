@@ -109,11 +109,18 @@ body {
 
 .score {
     display: grid;
-    grid-template-columns: 90% 1fr;
-    width: 150px;
+    grid-template-columns: 80% 1fr;
+    width: 60%;
+    text-transform: capitalize;
+    justify-items: center;
+    align-items: center;
 }
 
-.score .empty {
+.name {
+    justify-self: start;
+}
+
+.name.empty {
     justify-self: center;
 }
 

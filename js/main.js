@@ -1,10 +1,10 @@
-function createPlayer(name) {
+function createPlayer(name, symbol) {
     let playerName = name;
     const SetPlayerName = (newName) => playerName = newName;
     const GetPlayerName = () => playerName;
 
-    let symbol = name;
-    const GetSymbol = () => symbol;
+    let playerSymbol = symbol;
+    const GetSymbol = () => playerSymbol;
 
     let won = false;
     const SetWon = (haveWon) => won = haveWon;
@@ -141,7 +141,7 @@ const Screen = (function () {
     }
 
     const DrawScoreboard = () => {
-        const scoresDivs = [...document.querySelectorAll(".score")];
+        const scoresDivs = document.querySelectorAll(".score");
         const scores = Scoreboard.GetScores();
         scores.forEach((element, iterator) => {
             // Name Div
@@ -162,8 +162,8 @@ const Screen = (function () {
 const Gameboard = (function () {
     let currentTurn = 1;
 
-    const player1 = createPlayer('x');
-    const player2 = createPlayer('o');
+    const player1 = createPlayer('Player 1', 'x');
+    const player2 = createPlayer('Player 2', 'o');
 
     let currentPlayer = player1;
 
