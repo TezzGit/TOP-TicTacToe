@@ -42,8 +42,33 @@ const Soreboard = (function () {
     return { AddScore, GetScore, GetScores };
 })()
 
-const Gameboard = (function () {
+// Refactor Document Manipulation into Seperate Module to Uncouple Gameboard Functionality
+const Screen = (function () {
     const gameOverScreen = document.querySelector('.game-over-screen');
+    const gameOverHeading = document.querySelector('.result-heading');
+    const gameOverText = document.querySelector('.result-text')
+
+    const ShowGameOverScreen = (hide) => {
+        if (hide) {
+            gameOverScreen.classList.add('hidden');
+        } else {
+            gameOverScreen.classList.remove('hidden');
+        }
+    }
+
+    const SetGameOverHeading = (newHeading) => gameOverHeading.innerHTML = newHeading;
+    const SetGameOverText = (newText) => gameOverText.innerHTML = newText;
+
+    const boardCells = [...document.querySelectorAll('.cell')];
+    const SetGameBoardCell = (cellID, symbol) => boardCells[cellID].classList.add(symbol);
+    const ClearGameBoardCell = (cellID) => boardCells[cellID].classList = "cell";
+
+    return { ShowGameOverScreen, SetGameOverHeading, SetGameOverText, SetGameBoardCell, ClearGameBoardCell }
+})()
+
+
+
+const Gameboard = (function () {
     let currentTurn = 1;
 
     const player1 = createPlayer('x');
@@ -91,42 +116,36 @@ const Gameboard = (function () {
     }
 
     const drawBoard = () => {
-        const boardCells = [...document.querySelectorAll('.cell')];
-
         Cells.forEach((cell, iterator) => {
             switch (cell) {
                 case "x":
-                    boardCells[iterator].classList.add('cross');
+                    Screen.SetGameBoardCell(iterator, 'cross');
                     break;
                 case "o":
-                    boardCells[iterator].classList.add('circle');
+                    Screen.SetGameBoardCell(iterator, 'circle');
                     break;
                 case "":
-                    boardCells[iterator].classList.remove('cross');
-                    boardCells[iterator].classList.remove('circle');
+                    Screen.ClearGameBoardCell(iterator);
                     break;
             }
         })
     }
 
     const GameOver = (winner = "draw") => {
-        const gameOverHeading = document.querySelector('.result-heading');
-        const gameOverText = document.querySelector('.result-text')
-
-        gameOverScreen.classList.remove('hidden')
+        Screen.ShowGameOverScreen(true);
 
         switch (winner) {
             case "Player1":
-                gameOverHeading.innerHTML = `${player1.GetPlayerName().toUpperCase()} Wins`;
-                gameOverText.innerHTML = `Better Luck Next Time ${player2.GetPlayerName().toUpperCase()}, Do You Want To Play Again?`
+                Screen.SetGameOverHeading(`${player1.GetPlayerName().toUpperCase()} Wins`);
+                Screen.SetGameOverText(`Better Luck Next Time ${player2.GetPlayerName().toUpperCase()}, Do You Want To Play Again?`);
                 break;
             case "Player2":
-                gameOverHeading.innerHTML = `${player2.GetPlayerName().toUpperCase()} Wins`
-                gameOverText.innerHTML = `Better Luck Next Time ${player1.GetPlayerName().toUpperCase()}, Do You Want to Play Again?`
+                Screen.SetGameOverHeading(`${player2.GetPlayerName().toUpperCase()} Wins`);
+                Screen.SetGameOverText(`Better Luck Next Time ${player1.GetPlayerName().toUpperCase()}, Do You Want to Play Again?`);
                 break;
             case "draw":
-                gameOverHeading.innerHTML = "Draw - No Winner";
-                gameOverText.innerHTML = "Better Luck Next Time, Do You Want To Play Again?"
+                Screen.SetGameOverHeading("Draw - No Winner");
+                Screen.SetGameOverText("Better Luck Next Time, Do You Want To Play Again?");
         }
     }
 
@@ -158,7 +177,7 @@ const Gameboard = (function () {
         player2.SetWon(false);
         Cells.fill("");
         drawBoard();
-        gameOverScreen.classList.add('hidden');
+        Screen.ShowGameOverScreen(false);
     }
 
     const RenamePlayerOne = (newName) => player1.SetPlayerName(newName);
