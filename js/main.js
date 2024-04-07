@@ -14,24 +14,32 @@ function createPlayer(name) {
 }
 
 function createScore(name) {
-    const playerName = name;
+    let playerName = name;
+    const SetPlayerName = (name) => playerName = name;
+    const GetPlayerName = () => playerName;
     let gamesWon = 1;
-    const incrementScore = () => { gamesWon++ }
-    return { playerName, gamesWon, incrementScore };
+    const GetGamesWon = () => gamesWon;
+    const IncrementScore = () => { gamesWon++ }
+    return { SetPlayerName, GetPlayerName, GetGamesWon, IncrementScore };
 }
 
 const Soreboard = (function () {
     const scores = [];
     const AddScore = (name) => {
         const findPlayerIndex = scores.findIndex(name);
-        if (findPlayer === -1) {
+        if (findPlayerIndex === -1) {
             scores.push(createScore(name));
         } else {
-            scores[findPlayerIndex].incrementScore();
+            scores[findPlayerIndex].IncrementScore();
         }
     }
     const GetScore = (name) => scores.find(name).gamesWon;
-    return { AddScore, GetScore };
+
+    // Sort Descending -> Return Top 3 Scores
+    const GetScores = () => scores.sort((a, b) => a.GetScore() > b.GetScore() ? -1 : 1)
+        .slice(0, 3);
+
+    return { AddScore, GetScore, GetScores };
 })()
 
 const Gameboard = (function () {

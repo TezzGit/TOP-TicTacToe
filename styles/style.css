@@ -55,11 +55,11 @@ body {
     box-shadow: 5px 5px 3px lightgrey;
 }
 
-.new-game-btn:hover:enabled{
+.new-game-btn:hover:enabled {
     transform: translateY(-1px);
 }
 
-.new-game-btn:active:enabled{
+.new-game-btn:active:enabled {
     transform: translateY(1px);
 }
 
