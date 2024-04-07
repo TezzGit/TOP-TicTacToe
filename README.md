@@ -11,3 +11,6 @@ Session Scoreboard
 
 Wireframe
 ![TicTacToe-Wireframe](https://github.com/TezzIRL/TOP-TicTacToe/assets/7344730/bf2a0ec1-163b-4e76-b0ff-504a0e9a9ad9)
+
+Credits:
+Font: Dimitri by Fontalicious
