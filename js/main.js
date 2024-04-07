@@ -57,7 +57,7 @@ const Gameboard = (function () {
             [2, 5, 8]]
 
         let winCondition = false;
-        // theoretically... for each sub array -> return true if all subarray elements in reference to Cells i.e. Cells[SubArrayElement] Equals Current Symbol
+
         combinations.forEach((element) => {
             if (element.every((subElement) => Cells[subElement] === currentSymbol)) {
                 winCondition = true;
@@ -65,8 +65,6 @@ const Gameboard = (function () {
         })
         return winCondition;
     }
-
-    const GetCurrentPlayer = () => currentPlayer;
 
     const EndTurn = () => {
         if (currentPlayer === player1) {
@@ -103,10 +101,7 @@ const Gameboard = (function () {
         })
     }
 
-    const GetRound = () => currentTurn;
-
     const GameOver = (winner = "draw") => {
-        // Get Game Over Heading, text, and screen
         const gameOverHeading = document.querySelector('.result-heading');
         const gameOverText = document.querySelector('.result-text')
 
@@ -161,9 +156,8 @@ const Gameboard = (function () {
     const RenamePlayerOne = (newName) => player1.SetPlayerName(newName);
     const RenamePlayerTwo = (newName) => player2.SetPlayerName(newName);
 
-    return { GetCurrentPlayer, PlayRound, ResetGame, GetRound, RenamePlayerOne, RenamePlayerTwo }
+    return { PlayRound, ResetGame, RenamePlayerOne, RenamePlayerTwo }
 })()
-
 
 
 addEventListener('load', () => {
