@@ -36,7 +36,6 @@ const Soreboard = (function () {
 
 const Gameboard = (function () {
     const gameOverScreen = document.querySelector('.game-over-screen');
-    const maxTurns = 9;
     let currentTurn = 1;
 
     const player1 = createPlayer('x');
@@ -138,14 +137,13 @@ const Gameboard = (function () {
 
         drawBoard();
 
-        player1.SetWon(checkWin('x'));
+        currentPlayer.SetWon(checkWin(currentPlayer.GetSymbol()));
         if (player1.GetWon()) GameOver('Player1');
-        player2.SetWon(checkWin('o'));
         if (player2.GetWon()) GameOver('Player2');
 
         EndTurn();
 
-        if (currentTurn > maxTurns) {
+        if (currentTurn > Cells.length) {
             GameOver();
         }
     }
